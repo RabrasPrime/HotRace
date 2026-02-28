@@ -18,7 +18,7 @@
 #include <limits.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE	10
+#define BUFFER_SIZE	4096
 
 #define TRUE	1
 #define FALSE	0
@@ -39,17 +39,19 @@ typedef struct s_node
 
 typedef struct s_hashmap
 {
+	
 	t_node	**bucket;
 	int		size;
 	int		capacity;
 }	t_hashmap;
 
 void	set_node(t_node *node, char *key, char *value);
+int		init_hashmap(t_hashmap *hashmap);
 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 
-void	read_input(char *buf);
+size_t	read_input(char *buf);
 char 	*search(t_hashmap *map, char *key);
 int   	insert(t_hashmap *map, char *key, char *value);
 

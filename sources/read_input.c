@@ -14,11 +14,11 @@
 
 #include <unistd.h>
 
-void	read_input(char *buf)
+size_t	read_input(char *buf)
 {
 	size_t	rv;
 
 	rv = read(STDIN_FILENO, buf, BUFFER_SIZE);
 	buf[rv] = '\0';
-
+	return (rv);
 }

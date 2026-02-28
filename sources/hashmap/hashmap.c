@@ -15,7 +15,7 @@
 int	init_hashmap(t_hashmap *hashmap)
 {
     hashmap->size = 0;
-    hashmap->capacity = 1024;
+    hashmap->capacity = 4096;
     hashmap->bucket = ft_calloc(hashmap->capacity, sizeof(t_node *));
 	if (!hashmap->bucket)
 	{
@@ -26,7 +26,7 @@ int	init_hashmap(t_hashmap *hashmap)
 }
 
 # include <stdio.h>
-int	hash_function(t_hashmap	*hashmap, char *key)
+int	hash_function(t_hashmap	*map, char *key)
 {
 	int	bucket_index;
 	int	i;
@@ -35,16 +35,17 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 	int	factor;
 
 	i = 0;
-	key_length = strlen(key);
 	sum = 0;
+	key_length = strlen(key);
+	// printf("key_length: %d\n", key_length);
 	while (i < key_length)
 	{
-		sum = ((sum % hashmap->capacity) + key[i]) % hashmap->capacity;
+		sum = ((sum % map->capacity) + key[i]) % map->capacity;
 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
 		++i;
 	}
 	bucket_index = sum;
-	printf("index: %d\n", sum);
+	// printf("index: %d\n", sum);
 	return (bucket_index);
 }
 
@@ -70,6 +71,7 @@ int    insert(t_hashmap *map, char *key, char *value)
     	new_node->next = map->bucket[bucket_index];
         map->bucket[bucket_index] = new_node;
     }
+	++map->size;
 	return (0);
 }
 

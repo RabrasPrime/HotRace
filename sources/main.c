@@ -28,18 +28,19 @@ void	switch_mode(unsigned char *mode)
 {
 	if (*mode & SEARCH)
 	{
-		printf("SEARCH->DATA\n");
+		// printf("SEARCH->DATA\n");
 		*mode = DATA;
 	}
 	else
 	{
-		printf("DATA->SEARCH\n");
+		// printf("DATA->SEARCH\n");
 		*mode = SEARCH;
 	}
 }
 
-void	search_mode(char *input, t_hashmap *map)
+void	search_mode(char *input, t_hashmap *map, size_t *rv)
 {
+	(void)rv;
 	char	*value = search(map, input); // returns value
 	if (!value)
 	{
@@ -51,34 +52,35 @@ void	search_mode(char *input, t_hashmap *map)
 		write(STDOUT_FILENO, value, strlen(value));
 }
 
-void	data_mode(char *input, t_hashmap *map)
+void	data_mode(char *input, t_hashmap *map, size_t *rv)
 {
-	char value[BUFFER_SIZE];
-	read_input(value);				// read value
+	char value[BUFFER_SIZE + 1];
+
+	*rv = read_input(value);		// read value
 	insert(map, input, value);		// insert node
-	write(STDOUT_FILENO, "Key + Value registered\n", strlen("Key + Value registered\n"));
 }
 
-int	init_hashmap(t_hashmap *hashmap); 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(char *, t_hashmap *);
+	void			(*f_modes[MODE_QTY])(char *, t_hashmap *, size_t *);
 	t_hashmap		map;
-	char			input[BUFFER_SIZE];
+	char			input[BUFFER_SIZE + 1];
 	unsigned char	mode;
+	size_t			rv;
 
 	f_modes[DATA]= &data_mode;
 	f_modes[SEARCH]= &search_mode;
 	init_hashmap(&map);
 	mode = DATA;
-	while (TRUE)
+	
+	rv = 1;
+	while (rv)
 	{
-		read_input(input);
+		rv = read_input(input);
 		if (input[0] == '\n' && input[1] == '\0')
 			switch_mode(&mode);
 		else
-			f_modes[mode](input, &map);
-
+			f_modes[mode](input, &map, &rv);
 	}
 	return (0);
 }
