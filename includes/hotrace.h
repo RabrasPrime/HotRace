@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:30:13 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 14:05:46 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,18 @@
 #include <string.h>
 #include <limits.h>
 #include <unistd.h>
-#define TRUE 1
-#define FALSE 0
-#define BUFFER_SIZE 10
+
+#define BUFFER_SIZE	10
+
+#define TRUE	1
+#define FALSE	0
+
+enum	e_modes
+{
+	DATA,
+	SEARCH,
+	MODE_QTY
+};
 
 typedef struct s_node
 {
@@ -31,8 +40,8 @@ typedef struct s_node
 typedef struct s_hashmap
 {
 	t_node	**bucket;
-	int size;
-	int	capacity;
+	int		size;
+	int		capacity;
 }	t_hashmap;
 
 void	set_node(t_node *node, char *key, char *value);
@@ -41,7 +50,7 @@ void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 void	read_input(char *buf);
-char 	*search(char *key);
-void	insert(t_node *node);
+char 	*search(t_hashmap *map, char *key);
+int   	insert(t_hashmap *map, char *key, char *value);
 
 #endif

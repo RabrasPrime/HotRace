@@ -6,13 +6,13 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:05:10 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 14:27:25 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 12:35:30 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-void	insert(t_node *node)
+void	insert(t_entry *node)
 {
 	(void) node;
 
