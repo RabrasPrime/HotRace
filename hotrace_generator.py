@@ -25,7 +25,7 @@ def generate_test_file(filename, num_pairs, num_searches):
 
 if __name__ == "__main__":
 
-    num_insert = 10
-    num_search = 50
+    num_insert = 1000
+    num_search = 5000
 
     generate_test_file("massive_test.htr", num_insert, num_search)

@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 20:10:29 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:28:45 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,31 +38,32 @@ void	switch_mode(unsigned char *mode)
 	}
 }
 
-void	search_mode(char *input, t_vector *map)
+void	search_mode(t_buff *input, t_vector *map)
 {
-	const char	*value = search(map, input);
+	char	*key = input->valid_line;
+	const char	*value = search(map, key);
 
 	if (!value)
 	{
-		input[strlen(input) - 1] = '\0';
-		write(STDERR_FILENO, input, strlen(input));
-		write(STDERR_FILENO, ": Not found.\n", strlen(": Not found.\n"));
+		key[ft_strlen(key) - 1] = '\0';
+		write(STDERR_FILENO, key, ft_strlen(key));
+		write(STDERR_FILENO, ": Not found.\n", ft_strlen(": Not found.\n"));
 	}
 	else
-		write(STDOUT_FILENO, value, strlen(value));
+		write(STDOUT_FILENO, value, ft_strlen(value));
 }
 
-void	data_mode(char *key, t_vector *map)
+void	data_mode(t_buff *input, t_vector *map)
 {
-	t_buff	tmp;
+	char	*key = ft_strndup(input->valid_line, ft_strlen(input->valid_line));
 
-	get_next_line(&tmp);
-	insert(map, key, tmp.valid_line);
+	get_next_line(input);
+	insert(map, key, input->valid_line);
 }
 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(char *, t_vector *);
+	void			(*f_modes[MODE_QTY])(t_buff *, t_vector *);
 	t_buff			input;
 	t_vector		*map;
 	char			*line;
@@ -74,18 +75,19 @@ int main(void)
 	if (!map)
 		return (1);
 	mode = DATA;
-	input.read_value = 1;
-	while (input.read_value)
+	get_next_line(&input);
+	while (input.valid_line)
 	{
-		get_next_line(&input);
 		line = input.valid_line;
 		if (!ft_strcmp(line, "exit!\n")) // DEBUG
 			break;
 		if (line[0] == '\n' && line[1] == '\0')
 			switch_mode(&mode);
 		else
-			f_modes[mode](line, map);
+			f_modes[mode](&input, map);
+		get_next_line(&input);
 	}
+	ft_clear_struct(&input);
 	clear_vector(&map);
 	return (0);
 }

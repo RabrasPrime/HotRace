@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 20:07:06 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:30:36 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ bool		add_element(t_vector *vec, void *element);
 void		clear_vector(t_vector **vec);
 
 void		get_next_line(t_buff *data);
+void		*ft_clear_struct(t_buff *data);
 
 #endif

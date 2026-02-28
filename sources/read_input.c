@@ -6,13 +6,13 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:20:18 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 19:43:44 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:30:27 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-static void	*ft_clear_struct(t_buff *data)
+void	*ft_clear_struct(t_buff *data)
 {
 	data->full_buff = ft_freestr(data->full_buff);
 	data->residual = ft_freestr(data->residual);

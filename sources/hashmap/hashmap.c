@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 19:41:44 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:31:47 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int    insert(t_vector *vmap, char *key, char *value)
 	nodemap = (t_node *) map[bucket_index]->array;
 	node_index = rev_hash_function(map[bucket_index]->capacity, key);
 
-	nodemap[node_index].key = strdup(key);
-	nodemap[node_index].value = strdup(value);
+	nodemap[node_index].key = key;
+	nodemap[node_index].value = value;
 
 	map[bucket_index]->occupied_bytes += map[bucket_index]->datatype_size;
 	++map[bucket_index]->nb_elements;
@@ -111,7 +111,8 @@ char    *search(t_vector *map, char *key)
 
 	i = 0;
 	entry = ((t_vector **)map->array)[entry_index];
+	if (!entry)
+		return (NULL);
 	n = (t_node *) entry->array;
-
 	return (n[sub_index].value);
 }
