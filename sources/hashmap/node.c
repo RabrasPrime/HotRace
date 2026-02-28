@@ -1,38 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 12:31:08 by tjooris          ###   ########.fr       */
+/*   Created: 2026/02/28 12:04:06 by tjooris           #+#    #+#             */
+/*   Updated: 2026/02/28 12:17:01 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HOTRACE_H
-#define HOTRACE_H
+#include "hotrace.h"
 
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <unistd.h>
-
-typedef struct s_node
+void	set_node(t_node *node, char *key, char *value)
 {
-	char			*key;
-	char			*value;
-	struct s_entry	*next;
-}	t_node;
+	node->key = key;
+	node->value = value;
+	node->next = NULL;
+}
 
-typedef struct s_hashmap
-{
-	t_node	**bucket;
-	int size;
-	int	capacity;
-}	t_hashmap;
-
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t nmemb, size_t size);
-
-#endif

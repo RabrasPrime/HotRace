@@ -30,13 +30,31 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS))
 
 SRC =   main.c \
 
+#=-=-=-=-=-=-CALLOC-=-=-=-=-=#
+
+SRC +=  $(addprefix $(CALLOC_DIR), $(CALLOC_SRC))
+
+CALLOC_DIR    =    calloc/
+
+CALLOC_SRC    =    ft_calloc.c \
+				   ft_bzero.c \
+
+#=-=-=-=-=-=-HASHMAP-=-=-=-=-=#
+
+SRC +=  $(addprefix $(HASHMAP_DIR), $(HASHMAP_SRC))
+
+HASHMAP_DIR    =    hashmap/
+
+HASHMAP_SRC    =    hashmap.c \
+				    node.c \
+
+
 #=-=-=-=-=-=-EX-=-=-=-=-=#
 
 #SRC +=  $(addprefix $(EX_DIR), $(EX_SRC))
 
 #EX_DIR    =
 #EX_SRC    =
-
 
 #=-=-=-=-=-=-INCLUDES-=-=-=-=-=#
 
