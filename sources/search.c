@@ -6,7 +6,7 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:05:10 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 13:30:50 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 14:23:16 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 #include <unistd.h>
 
-char 	*search(char *key)
+char 	*search(t_hashmap *map, char *key)
 {
 	static int	i;
+	(void) map;
 	(void) key;
 	
 	if (i)

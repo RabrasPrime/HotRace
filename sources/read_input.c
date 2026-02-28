@@ -14,7 +14,7 @@
 
 #include <unistd.h>
 
-void	read_input(char buf[])
+void	read_input(char *buf)
 {
 	size_t	rv;
 

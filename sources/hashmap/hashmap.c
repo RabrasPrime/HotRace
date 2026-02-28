@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:10:23 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 14:19:01 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int    insert(t_hashmap *map, char *key, char *value)
     }
 	set_node(new_node, key, value);
 	bucket_index = hash_function(map, key);
-	if (mpap->bucket[bucket_index] == NULL)
+	if (map->bucket[bucket_index] == NULL)
     {
         map->bucket[bucket_index] = new_node;
     }
