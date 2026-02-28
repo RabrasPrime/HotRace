@@ -28,7 +28,10 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS))
 
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
-SRC =   main.c \
+SRC =   main.c			\
+		read_input.c	\
+		insert.c		\
+		search.c 		\
 
 #=-=-=-=-=-=-EX-=-=-=-=-=#
 
@@ -56,7 +59,7 @@ INCLUDES    =   $(INC_DIR) \
 
 CC          =   cc
 
-FLAGS       +=  -Wall -Wextra -Werror
+FLAGS       +=  -Wall -Wextra -Werror -g3
 PPFLAGS     +=  $(addprefix -I, $(INCLUDES)) -MMD -MP
 
 LDFLAGS     +=  $(addprefix -L, $(dir $(LIB_PATH)))

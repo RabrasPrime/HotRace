@@ -13,8 +13,9 @@
 #ifndef HOTRACE_H
 #define HOTRACE_H
 
-#include <stdlib.h>
-#include <unistd.h>
+#define TRUE 1
+#define FALSE 0
+#define BUFFER_SIZE 10
 
 typedef struct s_entry
 {
@@ -22,5 +23,9 @@ typedef struct s_entry
 	char			*value;
 	struct s_entry	*next;
 }	t_entry;
+
+void	read_input(char *buf);
+char 	*search(char *key);
+void	insert(t_entry *node);
 
 #endif
