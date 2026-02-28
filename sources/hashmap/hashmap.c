@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:28:22 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 14:35:45 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 	return (bucket_index);
 }
 
-int    insert_value(t_hashmap *map, char *key, char *value)
+int    insert(t_hashmap *map, char *key, char *value)
 {
 	int		bucket_index;
 	t_node	*new_node;
