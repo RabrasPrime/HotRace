@@ -30,7 +30,6 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS))
 
 SRC =   main.c			\
 		read_input.c	\
-		search.c 		\
 
 #=-=-=-=-=-=-CALLOC-=-=-=-=-=#
 

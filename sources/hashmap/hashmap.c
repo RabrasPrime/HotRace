@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:19:01 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 14:34:55 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 	{
 		sum = ((sum % hashmap->capacity) + key[i]) % hashmap->capacity;
 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
-		i++;
+		++i;
 	}
 	bucket_index = sum;
 	return (bucket_index);
@@ -69,3 +69,10 @@ int    insert(t_hashmap *map, char *key, char *value)
     }
 	return (0);
 }
+
+char    *search(t_hashmap *map, char *key)
+{
+	const int	index = hash_function(map, key);
+	return (map->bucket[index]->value);
+}
+
