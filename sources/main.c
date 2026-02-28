@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 20:28:45 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:42:42 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ void	search_mode(t_buff *input, t_vector *map)
 
 void	data_mode(t_buff *input, t_vector *map)
 {
+	// char	*key = input->valid_line;
 	char	*key = ft_strndup(input->valid_line, ft_strlen(input->valid_line));
+	// ft_freestr(input->valid_line);
 
 	get_next_line(input);
 	insert(map, key, input->valid_line);
