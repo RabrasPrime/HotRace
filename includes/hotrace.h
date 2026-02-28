@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 12:31:08 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 11:28:22 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 #include <string.h>
 #include <limits.h>
 #include <unistd.h>
+#define TRUE 1
+#define FALSE 0
+#define BUFFER_SIZE 10
 
 typedef struct s_node
 {
@@ -34,5 +37,9 @@ typedef struct s_hashmap
 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
+
+void	read_input(char *buf);
+char 	*search(char *key);
+void	insert(t_entry *node);
 
 #endif
