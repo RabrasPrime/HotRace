@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   hotrace.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 10:54:53 by tjooris          ###   ########.fr       */
+/*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
+/*   Updated: 2026/02/28 11:28:22 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main()
+#ifndef HOTRACE_H
+#define HOTRACE_H
+
+#include <stdlib.h>
+#include <unistd.h>
+
+typedef struct s_entry
 {
-	return 0;
-}
+	char			*key;
+	char			*value;
+	struct s_entry	*next;
+}	t_entry;
+
+#endif

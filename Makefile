@@ -18,7 +18,7 @@ MAKE_DIR    :=  .make/
 BUILD_DIR   :=  $(MAKE_DIR)build_$(or $(shell git branch --show-current),default)/
 BASE_DIR    :=  normal/
 
-SRC_DIR     =   src/
+SRC_DIR     =   sources/
 
 OBJS        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC))
 DEPS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC))
@@ -48,7 +48,7 @@ LIB         =   $(patsubst lib%.a, %, $(notdir $(LIB_PATH)))
 
 #SYS_LIB     =   -lmlx -lX11 -lXext -lm
 
-INC_DIR     =   include/
+INC_DIR     =   includes/
 INCLUDES    =   $(INC_DIR) \
                 $(dir $(LIB_PATH))$(INC_DIR)
 
