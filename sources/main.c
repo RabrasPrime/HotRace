@@ -38,7 +38,7 @@ void	switch_mode(unsigned char *mode)
 	}
 }
 
-void	search_mode(char *input, t_hashmap *map, size_t *rv)
+void	search_mode(char *input, t_vector *map, size_t *rv)
 {
 	(void)rv;
 	char	*value = search(map, input); // returns value
@@ -52,7 +52,7 @@ void	search_mode(char *input, t_hashmap *map, size_t *rv)
 		write(STDOUT_FILENO, value, strlen(value));
 }
 
-void	data_mode(char *input, t_hashmap *map, size_t *rv)
+void	data_mode(char *input, t_vector *map, size_t *rv)
 {
 	char value[BUFFER_SIZE + 1];
 
@@ -62,15 +62,15 @@ void	data_mode(char *input, t_hashmap *map, size_t *rv)
 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(char *, t_hashmap *, size_t *);
-	t_hashmap		map;
+	void			(*f_modes[MODE_QTY])(char *, t_vector *, size_t *);
+	t_vector		*map;
 	char			input[BUFFER_SIZE + 1];
 	unsigned char	mode;
 	size_t			rv;
 
 	f_modes[DATA]= &data_mode;
 	f_modes[SEARCH]= &search_mode;
-	init_hashmap(&map);
+	map = create_vector(BUFFER_SIZE, sizeof(t_node *), &clear_bucket);
 	mode = DATA;
 	
 	rv = 1;
@@ -80,7 +80,8 @@ int main(void)
 		if (input[0] == '\n' && input[1] == '\0')
 			switch_mode(&mode);
 		else
-			f_modes[mode](input, &map, &rv);
+			f_modes[mode](input, map, &rv);
 	}
+	clear_vector(&map);
 	return (0);
 }

@@ -33,12 +33,13 @@ SRC =   main.c			\
 
 #=-=-=-=-=-=-CALLOC-=-=-=-=-=#
 
-SRC +=  $(addprefix $(CALLOC_DIR), $(CALLOC_SRC))
+SRC +=  $(addprefix $(MEMORY_DIR), $(MEMORY_SRC))
 
-CALLOC_DIR    =    calloc/
+MEMORY_DIR    =    memory/
 
-CALLOC_SRC    =    ft_calloc.c \
-				   ft_bzero.c \
+MEMORY_SRC    =    ft_calloc.c	\
+				   ft_bzero.c	\
+				   ft_memcpy.c	\
 
 #=-=-=-=-=-=-HASHMAP-=-=-=-=-=#
 
@@ -49,6 +50,16 @@ HASHMAP_DIR    =    hashmap/
 HASHMAP_SRC    =    hashmap.c \
 				    node.c \
 
+
+#=-=-=-=-=-=-EX-=-=-=-=-=#
+
+SRC +=  $(addprefix $(VEC_DIR), $(VEC_SRC))
+
+VEC_DIR    = vectors/
+VEC_SRC    = 	add_element.c	\
+				clear_vector.c	\
+				create_vector.c	\
+				grow_vector.c	\
 
 #=-=-=-=-=-=-EX-=-=-=-=-=#
 

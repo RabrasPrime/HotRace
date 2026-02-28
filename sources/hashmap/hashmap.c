@@ -12,21 +12,7 @@
 
 #include "hotrace.h"
 
-int	init_hashmap(t_hashmap *hashmap)
-{
-    hashmap->size = 0;
-    hashmap->capacity = 4096;
-    hashmap->bucket = ft_calloc(hashmap->capacity, sizeof(t_node *));
-	if (!hashmap->bucket)
-	{
-		write(STDERR_FILENO, "Error: Memory allocation failed for hashmap buckets.\n", 53);
-        return (-1);
-	}
-    return (0);
-}
-
-# include <stdio.h>
-int	hash_function(t_hashmap	*map, char *key)
+int	hash_function(const size_t capacity, char *key)
 {
 	int	bucket_index;
 	int	i;
@@ -40,7 +26,7 @@ int	hash_function(t_hashmap	*map, char *key)
 	// printf("key_length: %d\n", key_length);
 	while (i < key_length)
 	{
-		sum = ((sum % map->capacity) + key[i]) % map->capacity;
+		sum = ((sum % capacity) + key[i]) % capacity;
 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
 		++i;
 	}
@@ -49,36 +35,44 @@ int	hash_function(t_hashmap	*map, char *key)
 	return (bucket_index);
 }
 
-int    insert(t_hashmap *map, char *key, char *value)
+int    insert(t_vector *vmap, char *key, char *value)
 {
 	int		bucket_index;
 	t_node	*new_node;
+	t_node	**map;
 
+	map = (t_node **) vmap->array;
 	new_node = ft_calloc(1, sizeof(t_node));
 	if (!new_node)
     {
-		write(STDERR_FILENO, "Error: Memory allocation failed for new node.\n", 45);
+		write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
         return (-1);
     }
 	set_node(new_node, key, value);
-	bucket_index = hash_function(map, key);
-	if (map->bucket[bucket_index] == NULL)
-    {
-        map->bucket[bucket_index] = new_node;
-    }
-    else
-    {
-    	new_node->next = map->bucket[bucket_index];
-        map->bucket[bucket_index] = new_node;
-    }
-	++map->size;
+	bucket_index = hash_function(vmap->capacity, key);
+	if (map[bucket_index] == NULL)
+	{
+		if (!grow_vector(vmap, 1))
+		{
+			write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
+			return (-1);
+		}
+		map[bucket_index] = new_node;
+		vmap->occupied_bytes += vmap->datatype_size;
+		++vmap->nb_elements;
+	}
+	else
+	{
+		new_node->next = map[bucket_index];
+		map[bucket_index] = new_node;
+	}
 	return (0);
 }
 
-char    *search(t_hashmap *map, char *key)
+char    *search(t_vector *map, char *key)
 {
-	const int	index = hash_function(map, key);
-	t_node		*n = map->bucket[index];
+	const int	index = hash_function(map->capacity, key);
+	t_node		*n = ((t_node **)map->array)[index];
 
 	if (n)
 		return (n->value);
