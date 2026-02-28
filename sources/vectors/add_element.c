@@ -14,7 +14,7 @@
 
 bool	add_element(t_vector *vec, void *element)
 {
-	if (!grow_vector(vec, 1))
+	if (!grow_vector(vec))
 		return (false);
 	ft_memcpy(vec->array + vec->occupied_bytes, element, vec->datatype_size);
 	vec->occupied_bytes += vec->datatype_size;

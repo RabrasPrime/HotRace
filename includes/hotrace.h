@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 19:01:58 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:07:06 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 
 #include <stdio.h> // owjhlkfhklshhgshghdgh
 
-#define BUFFER_SIZE	4096
+#define BUFFER_SIZE		4096
+#define DEFAULT_VEC_CAP	4096
+
+#define LOMAGIC 0x0101010101010101ULL 
+#define HIMAGIC 0x8080808080808080ULL 
 
 #define TRUE	1
 #define FALSE	0
@@ -36,6 +40,15 @@ enum	e_modes
 
 typedef struct s_vector t_vector;
 typedef struct s_node t_node;
+typedef struct s_buff t_buff;
+
+struct					s_buff
+{
+	char				*full_buff;
+	char				*residual;
+	char				*valid_line;
+	int					read_value;
+};
 
 struct					s_vector
 {
@@ -63,15 +76,21 @@ void		*ft_calloc(size_t nmemb, size_t size);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 
 int			ft_strcmp(const char *s1, const char *s2);
+char		*ft_stradd(char *s1, char *s2);
+char		*ft_strchr(const char *s, int c);
+char		*ft_strndup(char *s, size_t n);
+uint64_t	ft_strlen(const char *s);
+void		*ft_freestr(char *s);
 
-size_t		read_input(char *buf);
 char 		*search(t_vector *map, char *key);
 int   		insert(t_vector *map, char *key, char *value);
 
 t_vector	*create_vector(size_t capacity, size_t datatype_size,
 							void (*clear_array)(t_vector *));
-bool		grow_vector(t_vector *vec, size_t new_elements);
+bool		grow_vector(t_vector *vec);
 bool		add_element(t_vector *vec, void *element);
 void		clear_vector(t_vector **vec);
+
+void		get_next_line(t_buff *data);
 
 #endif

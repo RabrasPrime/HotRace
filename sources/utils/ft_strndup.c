@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grow_vector.c                                      :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 18:19:45 by abetemps          #+#    #+#             */
-/*   Updated: 2025/07/16 18:51:03 by abetemps         ###   ########.fr       */
+/*   Created: 2026/02/28 20:02:14 by abetemps          #+#    #+#             */
+/*   Updated: 2026/02/28 20:02:15 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-bool	grow_vector(t_vector *vec)
+char	*ft_strndup(char *s, size_t n)
 {
-	void	*old_array;
+	char	*ns;
+	size_t	i;
 
-	if (vec->nb_elements + 1 > vec->capacity)
+	i = 0;
+	ns = malloc(sizeof(char) * n + 1);
+	if (!ns)
+		return (NULL);
+	while (s[i] && i < n)
 	{
-		old_array = vec->array;
-		while (vec->nb_elements + 1 > vec->capacity)
-			vec->capacity <<= 1;
-		vec->array = ft_calloc(vec->capacity, vec->datatype_size);
-		if (!vec->array)
-		{
-			clear_vector(&vec);
-			return (false);
-		}
-		ft_memcpy(vec->array, old_array, vec->capacity);
-		free(old_array);
+		ns[i] = s[i];
+		i++;
 	}
-	return (true);
+	ns[i] = '\0';
+	return (ns);
 }

@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grow_vector.c                                      :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 18:19:45 by abetemps          #+#    #+#             */
-/*   Updated: 2025/07/16 18:51:03 by abetemps         ###   ########.fr       */
+/*   Created: 2026/02/28 20:01:33 by abetemps          #+#    #+#             */
+/*   Updated: 2026/02/28 20:13:28 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-bool	grow_vector(t_vector *vec)
+char	*ft_strchr(const char *s, int c)
 {
-	void	*old_array;
+	int	len;
+	int	i;
 
-	if (vec->nb_elements + 1 > vec->capacity)
+	len = ft_strlen(s);
+	if (!s || len == 0)
+		return (NULL);
+	i = 0;
+	while (i <= len)
 	{
-		old_array = vec->array;
-		while (vec->nb_elements + 1 > vec->capacity)
-			vec->capacity <<= 1;
-		vec->array = ft_calloc(vec->capacity, vec->datatype_size);
-		if (!vec->array)
-		{
-			clear_vector(&vec);
-			return (false);
-		}
-		ft_memcpy(vec->array, old_array, vec->capacity);
-		free(old_array);
+		if (s[i] == (unsigned char)c)
+			return ((char *)s + i);
+		else
+			i++;
 	}
-	return (true);
+	return (NULL);
 }

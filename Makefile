@@ -29,10 +29,9 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS))
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
 SRC =   main.c			\
-		ft_strcmp.c		\
 		read_input.c	\
 
-#=-=-=-=-=-=-CALLOC-=-=-=-=-=#
+#=-=-=-=-=-=-MEMORY=-=-=-=-=#
 
 SRC +=  $(addprefix $(MEMORY_DIR), $(MEMORY_SRC))
 
@@ -51,16 +50,27 @@ HASHMAP_DIR    =    hashmap/
 HASHMAP_SRC    =    hashmap.c \
 				    node.c \
 
+#=-=-=-=-=-=-UTILS=-=-=-=-=#
 
-#=-=-=-=-=-=-EX-=-=-=-=-=#
+SRC +=  $(addprefix $(UTILS_DIR), $(UTILS_SRC))
+
+UTILS_DIR    =  utils/
+
+UTILS_SRC    =  ft_strlen.c		\
+				ft_strndup.c	\
+				ft_strchr.c		\
+				ft_stradd.c		\
+				ft_strcmp.c		\
+
+#=-=-=-=-=-=-VEC=-=-=-=-=#
 
 SRC +=  $(addprefix $(VEC_DIR), $(VEC_SRC))
 
 VEC_DIR    = vectors/
-VEC_SRC    = 	add_element.c	\
-				clear_vector.c	\
-				create_vector.c	\
-				grow_vector.c	\
+VEC_SRC    = add_element.c		\
+			 clear_vector.c		\
+			 create_vector.c	\
+			 grow_vector.c		\
 
 #=-=-=-=-=-=-EX-=-=-=-=-=#
 

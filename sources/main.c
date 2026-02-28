@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:36:54 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 20:10:29 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ void	switch_mode(unsigned char *mode)
 {
 	if (*mode & SEARCH)
 	{
-		// printf("SEARCH->DATA\n");
+		printf("====DATA MODE====\n");
 		*mode = DATA;
 	}
 	else
 	{
-		// printf("DATA->SEARCH\n");
+		printf("====SEARCH MODE====\n");
 		*mode = SEARCH;
 	}
 }
 
-void	search_mode(char *input, t_vector *map, size_t *rv)
+void	search_mode(char *input, t_vector *map)
 {
-	(void)rv;
-	char	*value = search(map, input); // returns value
+	const char	*value = search(map, input);
+
 	if (!value)
 	{
 		input[strlen(input) - 1] = '\0';
@@ -52,36 +52,39 @@ void	search_mode(char *input, t_vector *map, size_t *rv)
 		write(STDOUT_FILENO, value, strlen(value));
 }
 
-void	data_mode(char *input, t_vector *map, size_t *rv)
+void	data_mode(char *key, t_vector *map)
 {
-	char value[BUFFER_SIZE + 1];
+	t_buff	tmp;
 
-	*rv = read_input(value);		// read value
-	insert(map, input, value);		// insert node
+	get_next_line(&tmp);
+	insert(map, key, tmp.valid_line);
 }
 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(char *, t_vector *, size_t *);
+	void			(*f_modes[MODE_QTY])(char *, t_vector *);
+	t_buff			input;
 	t_vector		*map;
-	char			input[BUFFER_SIZE + 1];
+	char			*line;
 	unsigned char	mode;
-	size_t			rv;
 
 	f_modes[DATA]= &data_mode;
 	f_modes[SEARCH]= &search_mode;
-	map = create_vector(BUFFER_SIZE, sizeof(t_vector *), &clear_bucket);
+	map = create_vector(DEFAULT_VEC_CAP, sizeof(t_vector *), &clear_bucket);
 	if (!map)
 		return (1);
 	mode = DATA;
-	rv = 1;
-	while (rv)
+	input.read_value = 1;
+	while (input.read_value)
 	{
-		rv = read_input(input);
-		if (input[0] == '\n' && input[1] == '\0')
+		get_next_line(&input);
+		line = input.valid_line;
+		if (!ft_strcmp(line, "exit!\n")) // DEBUG
+			break;
+		if (line[0] == '\n' && line[1] == '\0')
 			switch_mode(&mode);
 		else
-			f_modes[mode](input, map, &rv);
+			f_modes[mode](line, map);
 	}
 	clear_vector(&map);
 	return (0);

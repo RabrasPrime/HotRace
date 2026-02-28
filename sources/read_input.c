@@ -6,19 +6,98 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:20:18 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 12:28:37 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:43:44 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-#include <unistd.h>
-
-size_t	read_input(char *buf)
+static void	*ft_clear_struct(t_buff *data)
 {
-	size_t	rv;
+	data->full_buff = ft_freestr(data->full_buff);
+	data->residual = ft_freestr(data->residual);
+	data->valid_line = ft_freestr(data->valid_line);
+	return (data);
+}
 
-	rv = read(STDIN_FILENO, buf, BUFFER_SIZE);
-	buf[rv] = '\0';
-	return (rv);
+static void	ft_init_struct(t_buff *data, char *residual)
+{
+	data->full_buff = residual;
+	data->residual = NULL;
+	data->valid_line = NULL;
+	data->read_value = 0;
+}
+
+static void	*ft_extract_line(t_buff *data)
+{
+	char	*post_nl;
+
+	post_nl = ft_strchr(data->full_buff, '\n');
+	if (post_nl++)
+	{
+		data->valid_line = ft_strndup(data->full_buff, (post_nl
+					- data->full_buff));
+		if (!data->valid_line)
+			return (ft_clear_struct(data));
+		data->residual = ft_strndup(post_nl, ft_strlen(data->full_buff));
+		if (!data->residual)
+			return (ft_clear_struct(data));
+	}
+	else if (data->full_buff[0] == '\0')
+		data->valid_line = NULL;
+	else
+	{
+		data->valid_line = ft_strndup(data->full_buff,
+				ft_strlen(data->full_buff));
+		if (!data->valid_line)
+			return (ft_clear_struct(data));
+	}
+	ft_freestr(data->full_buff);
+	return (data);
+}
+
+static void	*ft_parse_line(int fd, t_buff *data)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	char	*post_nl;
+
+	post_nl = NULL;
+	while (data->read_value >= 0 && !post_nl)
+	{
+		post_nl = ft_strchr(data->full_buff, '\n');
+		if (post_nl)
+			break ;
+		data->read_value = read(fd, buffer, BUFFER_SIZE);
+		if (data->read_value >= 0)
+			buffer[data->read_value] = '\0';
+		if (data->read_value <= 0)
+			break ;
+		data->full_buff = ft_stradd(data->full_buff, buffer);
+		if (!data->full_buff)
+			break ;
+	}
+	if (data->read_value < 0)
+		return (ft_freestr(data->full_buff));
+	if (data->full_buff && data->read_value >= 0)
+		ft_extract_line(data);
+	else
+		ft_freestr(data->full_buff);
+	return (data);
+}
+
+void	get_next_line(t_buff *data)
+{
+	const int	fd = STDIN_FILENO;
+	static char	*residual;
+
+	if (fd < 0 || BUFFER_SIZE < 1)
+	{
+		residual = NULL;
+		data->valid_line = NULL;
+		return ;
+	}
+	ft_init_struct(data, residual);
+	ft_parse_line(fd, data);
+	residual = data->residual;
+	return ;
 }
