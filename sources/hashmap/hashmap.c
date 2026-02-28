@@ -78,7 +78,10 @@ char    *search(t_hashmap *map, char *key)
 	const int	index = hash_function(map, key);
 	t_node		*n = map->bucket[index];
 
-	return (n->value); // attention given that we calloc t_node into insert(),
-					   // an "unregistered" value while do shit
+	if (n)
+		return (n->value);
+	else
+		return (NULL);
+		
 }
 
