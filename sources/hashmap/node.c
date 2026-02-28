@@ -12,10 +12,12 @@
 
 #include "hotrace.h"
 
+#include <string.h>
+
 void	set_node(t_node *node, char *key, char *value)
 {
-	node->key = key;
-	node->value = value;
+	node->key = strdup(key);
+	node->value = strdup(value);
 	node->next = NULL;
 }
 

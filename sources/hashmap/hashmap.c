@@ -25,6 +25,7 @@ int	init_hashmap(t_hashmap *hashmap)
     return (0);
 }
 
+# include <stdio.h>
 int	hash_function(t_hashmap	*hashmap, char *key)
 {
 	int	bucket_index;
@@ -35,6 +36,7 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 
 	i = 0;
 	key_length = strlen(key);
+	sum = 0;
 	while (i < key_length)
 	{
 		sum = ((sum % hashmap->capacity) + key[i]) % hashmap->capacity;
@@ -42,6 +44,7 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 		++i;
 	}
 	bucket_index = sum;
+	printf("index: %d\n", sum);
 	return (bucket_index);
 }
 
@@ -50,7 +53,7 @@ int    insert(t_hashmap *map, char *key, char *value)
 	int		bucket_index;
 	t_node	*new_node;
 
-	new_node = malloc(sizeof(t_node));
+	new_node = ft_calloc(1, sizeof(t_node));
 	if (!new_node)
     {
 		write(STDERR_FILENO, "Error: Memory allocation failed for new node.\n", 45);
@@ -73,6 +76,9 @@ int    insert(t_hashmap *map, char *key, char *value)
 char    *search(t_hashmap *map, char *key)
 {
 	const int	index = hash_function(map, key);
-	return (map->bucket[index]->value);
+	t_node		*n = map->bucket[index];
+
+	return (n->value); // attention given that we calloc t_node into insert(),
+					   // an "unregistered" value while do shit
 }
 
