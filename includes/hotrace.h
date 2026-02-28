@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 11:28:22 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 13:47:10 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	*ft_calloc(size_t nmemb, size_t size);
 
 void	read_input(char *buf);
 char 	*search(char *key);
-void	insert(t_entry *node);
+void	insert(t_node *node);
 
 #endif

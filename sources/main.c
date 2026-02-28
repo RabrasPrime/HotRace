@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 11:39:15 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 13:47:22 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int main(void)
 		}
 		else
 		{
-			t_entry node = {input, NULL, NULL}; // where input == value
+			t_node node = {input, NULL, NULL}; // where input == value
 			read_input(input);	// read value
 			node.value = input;
 			insert(&node);		// insert node
