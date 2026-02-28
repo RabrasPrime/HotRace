@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:05:46 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 14:30:13 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_node
 {
 	char			*key;
 	char			*value;
-	struct s_entry	*next;
+	struct s_node	*next;
 }	t_node;
 
 typedef struct s_hashmap
