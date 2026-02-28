@@ -6,17 +6,23 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 12:30:48 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 14:10:23 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-void	init_hashmap(t_hashmap *hashmap)
+int	init_hashmap(t_hashmap *hashmap)
 {
     hashmap->size = 0;
     hashmap->capacity = 1024;
     hashmap->bucket = ft_calloc(hashmap->capacity, sizeof(t_node *));
+	if (!hashmap->bucket)
+	{
+		write(STDERR_FILENO, "Error: Memory allocation failed for hashmap buckets.\n", 53);
+        return (-1);
+	}
+    return (0);
 }
 
 int	hash_function(t_hashmap	*hashmap, char *key)
@@ -37,4 +43,29 @@ int	hash_function(t_hashmap	*hashmap, char *key)
 	}
 	bucket_index = sum;
 	return (bucket_index);
+}
+
+int    insert(t_hashmap *map, char *key, char *value)
+{
+	int		bucket_index;
+	t_node	*new_node;
+
+	new_node = malloc(sizeof(t_node));
+	if (!new_node)
+    {
+		write(STDERR_FILENO, "Error: Memory allocation failed for new node.\n", 45);
+        return (-1);
+    }
+	set_node(new_node, key, value);
+	bucket_index = hash_function(map, key);
+	if (mpap->bucket[bucket_index] == NULL)
+    {
+        map->bucket[bucket_index] = new_node;
+    }
+    else
+    {
+    	new_node->next = map->bucket[bucket_index];
+        map->bucket[bucket_index] = new_node;
+    }
+	return (0);
 }
