@@ -6,14 +6,28 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:05:10 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 12:35:56 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 13:30:50 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
+#include <unistd.h>
+
 char 	*search(char *key)
 {
+	static int	i;
 	(void) key;
-	return ("VALUE");
+	
+	if (i)
+	{
+		i = 0;
+		return ("Found value\n");
+	}
+	else
+	{
+		i = 1;
+		return (NULL);
+	}
+
 }

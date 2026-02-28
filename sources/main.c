@@ -31,17 +31,26 @@ int main(void)
 		read_input(input);
 		if (input[0] == '\n' && input[1] == '\0')
 		{
+			read_input(input);
 			char	*value = search(input); // returns value
-			write(STDOUT_FILENO, value, strlen(value));
+			if (!value)
+			{
+				input[strlen(input) - 1] = '\0';
+				write(STDERR_FILENO, input, strlen(input));
+				write(STDERR_FILENO, ": Not found.\n", strlen(": Not found.\n"));
+				continue;
+			}
+			else
+				write(STDOUT_FILENO, value, strlen(value));
 		}
 		else
 		{
-			t_entry node = {input, NULL, NULL};
+			t_entry node = {input, NULL, NULL}; // where input == value
 			read_input(input);	// read value
 			node.value = input;
 			insert(&node);		// insert node
+			write(STDOUT_FILENO, "Key + Value registered\n", strlen("Key + Value registered\n"));
 		}
 	}
-
 	return (0);
 }
