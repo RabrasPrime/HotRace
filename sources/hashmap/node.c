@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:04:06 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 12:17:01 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/02/28 19:09:13 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,35 @@ void	set_node(t_node *node, char *key, char *value)
 {
 	node->key = strdup(key);
 	node->value = strdup(value);
-	node->next = NULL;
 }
 
-void clear_node(t_node *n)
+void clear_node(t_vector *vnodes)
 {
-	free(n->key);
-	free(n->value);
+	t_node	*nodes;
+	size_t	i;
+
+	nodes = (t_node *) vnodes->array;
+	i = 0;
+	while (i < vnodes->capacity)
+	{
+		free(nodes[i].key);
+		free(nodes[i].value);
+		++i;
+	}
+
 }
 
 void clear_bucket(t_vector *vmap)
 {
-	size_t	i;
-	t_node	**bucket;
-	t_node	*map;
+	size_t		i;
+	t_vector	**bucket;
 
 	i = 0;
-	bucket = (t_node **) vmap->array;
+	bucket = (t_vector **) vmap->array;
 	while(i < vmap->capacity)
 	{
-		map = bucket[i];
-		while (map)
-		{
-			clear_node(map);
-			map = map->next;
-		}
+		if (bucket[i])
+			clear_vector(&bucket[i]);
+		++i;
 	}
 }

@@ -70,9 +70,10 @@ int main(void)
 
 	f_modes[DATA]= &data_mode;
 	f_modes[SEARCH]= &search_mode;
-	map = create_vector(BUFFER_SIZE, sizeof(t_node *), &clear_bucket);
+	map = create_vector(BUFFER_SIZE, sizeof(t_vector *), &clear_bucket);
+	if (!map)
+		return (1);
 	mode = DATA;
-	
 	rv = 1;
 	while (rv)
 	{

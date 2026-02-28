@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 14:34:55 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:06:52 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	hash_function(const size_t capacity, char *key)
 	i = 0;
 	sum = 0;
 	key_length = strlen(key);
-	// printf("key_length: %d\n", key_length);
 	while (i < key_length)
 	{
 		sum = ((sum % capacity) + key[i]) % capacity;
@@ -31,24 +30,17 @@ int	hash_function(const size_t capacity, char *key)
 		++i;
 	}
 	bucket_index = sum;
-	// printf("index: %d\n", sum);
 	return (bucket_index);
 }
 
 int    insert(t_vector *vmap, char *key, char *value)
 {
-	int		bucket_index;
-	t_node	*new_node;
-	t_node	**map;
+	int			bucket_index;
+	t_node		new_node;
+	t_vector	**map;
 
-	map = (t_node **) vmap->array;
-	new_node = ft_calloc(1, sizeof(t_node));
-	if (!new_node)
-    {
-		write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
-        return (-1);
-    }
-	set_node(new_node, key, value);
+	map = (t_vector **) vmap->array;
+	set_node(&new_node, key, value);
 	bucket_index = hash_function(vmap->capacity, key);
 	if (map[bucket_index] == NULL)
 	{
@@ -57,14 +49,19 @@ int    insert(t_vector *vmap, char *key, char *value)
 			write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
 			return (-1);
 		}
-		map[bucket_index] = new_node;
+		map[bucket_index] = create_vector(BUFFER_SIZE, sizeof(t_node), &clear_node);
+		if (!map[bucket_index])
+		{
+			write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
+			return (-1);
+		}
 		vmap->occupied_bytes += vmap->datatype_size;
 		++vmap->nb_elements;
 	}
-	else
+	if (!add_element(map[bucket_index], &new_node))
 	{
-		new_node->next = map[bucket_index];
-		map[bucket_index] = new_node;
+		write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
+		return (-1);
 	}
 	return (0);
 }
@@ -72,12 +69,18 @@ int    insert(t_vector *vmap, char *key, char *value)
 char    *search(t_vector *map, char *key)
 {
 	const int	index = hash_function(map->capacity, key);
-	t_node		*n = ((t_node **)map->array)[index];
+	t_vector	*entry;
+	t_node		*n;
+	size_t		i;
 
-	if (n)
-		return (n->value);
-	else
-		return (NULL);
-		
+	i = 0;
+	entry = ((t_vector **)map->array)[index];
+	n = (t_node *) entry->array;
+	while (i < entry->capacity)
+	{
+		if (!ft_strcmp(key, n[i].key))
+			return (n[i].value);
+		++i;
+	}
+	return (NULL);
 }
-

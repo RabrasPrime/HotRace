@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 17:02:05 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/02/28 19:01:58 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,18 @@ struct s_node
 {
 	char			*key;
 	char			*value;
-	t_node			*next;
 };
 
 void		set_node(t_node *node, char *key, char *value);
+void 		clear_node(t_vector *vnodes);
 void		clear_bucket(t_vector *map);
 int			init_vector(t_vector *hashmap);
 
 void		ft_bzero(void *s, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
+
+int			ft_strcmp(const char *s1, const char *s2);
 
 size_t		read_input(char *buf);
 char 		*search(t_vector *map, char *key);
@@ -69,7 +71,7 @@ int   		insert(t_vector *map, char *key, char *value);
 t_vector	*create_vector(size_t capacity, size_t datatype_size,
 							void (*clear_array)(t_vector *));
 bool		grow_vector(t_vector *vec, size_t new_elements);
-bool		add_element(t_vector *vec, void *element, ssize_t index);
+bool		add_element(t_vector *vec, void *element);
 void		clear_vector(t_vector **vec);
 
 #endif

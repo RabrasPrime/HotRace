@@ -29,6 +29,7 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS))
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
 SRC =   main.c			\
+		ft_strcmp.c		\
 		read_input.c	\
 
 #=-=-=-=-=-=-CALLOC-=-=-=-=-=#
