@@ -12,93 +12,93 @@
 
 #include "hotrace.h"
 
-void	*ft_clear_struct(t_buff *data)
+static int	ensure_capacity(t_buff *buffer, size_t additional_size)
 {
-	data->full_buff = ft_freestr(data->full_buff);
-	data->residual = ft_freestr(data->residual);
-	data->valid_line = ft_freestr(data->valid_line);
-	return (data);
+	size_t	new_capacity;
+	char	*new_data;
+
+	if (buffer->capacity - buffer->length < additional_size)
+	{
+		if ((buffer->capacity << 1) - buffer->length < additional_size)
+			new_capacity = buffer->length + additional_size;
+		else
+			new_capacity = buffer->capacity << 1;
+		new_data = malloc(new_capacity);
+		if (!new_data)
+			return (0);
+		if (buffer->data)
+			ft_memmove(new_data, buffer->data, buffer->length);
+		free(buffer->data);
+		buffer->data = new_data;
+		buffer->capacity = new_capacity;
+	}
+	return (1);
 }
 
-static void	ft_init_struct(t_buff *data, char *residual)
+static int	read_until_newline(int fd, t_buff *buffer, char **newline_pos)
 {
-	data->full_buff = residual;
-	data->residual = NULL;
-	data->valid_line = NULL;
-	data->read_value = 0;
+	size_t	search_start;
+	ssize_t	bytes_read;
+
+	search_start = 0;
+	bytes_read = BUFFER_SIZE;
+	while (1)
+	{
+		*newline_pos = ft_memchr(buffer->data + search_start, '\n',
+				buffer->length - search_start);
+		if (*newline_pos != NULL || bytes_read != BUFFER_SIZE)
+			return (bytes_read);
+		search_start = buffer->length;
+		if (!ensure_capacity(buffer, BUFFER_SIZE))
+			return (-1);
+		bytes_read = read(fd, buffer->data + buffer->length, BUFFER_SIZE);
+		if (bytes_read == -1)
+			return (bytes_read);
+		buffer->length += bytes_read;
+	}
 }
 
-static void	*ft_extract_line(t_buff *data)
+static char	*extract_line(t_buff *buffer, char *newline_pos)
 {
-	char	*post_nl;
+	size_t	line_length;
+	char	*line;
 
-	post_nl = ft_strchr(data->full_buff, '\n');
-	if (post_nl++)
-	{
-		data->valid_line = ft_strndup(data->full_buff, (post_nl
-					- data->full_buff));
-		if (!data->valid_line)
-			return (ft_clear_struct(data));
-		data->residual = ft_strndup(post_nl, ft_strlen(data->full_buff));
-		if (!data->residual)
-			return (ft_clear_struct(data));
-	}
-	else if (data->full_buff[0] == '\0')
-		data->valid_line = NULL;
-	else
-	{
-		data->valid_line = ft_strndup(data->full_buff,
-				ft_strlen(data->full_buff));
-		if (!data->valid_line)
-			return (ft_clear_struct(data));
-	}
-	ft_freestr(data->full_buff);
-	data->full_buff = NULL;
-	return (data);
+	line_length = 0;
+	if (newline_pos != NULL)
+		line_length = newline_pos - buffer->data + 1;
+	else if (buffer->length > 0)
+		line_length = buffer->length;
+	line = ft_strndup(buffer->data, line_length);
+	if (!line)
+		return (NULL);
+	buffer->length -= line_length;
+	ft_memmove(buffer->data, buffer->data + line_length, buffer->length);
+	return (line);
 }
 
-static void	*ft_parse_line(int fd, t_buff *data)
+char	*get_next_line(void)
 {
-	char	buffer[BUFFER_SIZE + 1];
-	char	*post_nl;
+	static t_buff	buffer;
+	ssize_t			bytes_read;
+	char			*newline_pos;
+	char			*line;
 
-	post_nl = NULL;
-	while (data->read_value >= 0 && !post_nl)
+	line = NULL;
+	bytes_read = read_until_newline(STDIN_FILENO, &buffer, &newline_pos);
+	if (bytes_read != -1 && buffer.length > 0)
+		line = extract_line(&buffer, newline_pos);
+	if (bytes_read <= 0 || line == NULL)
 	{
-		post_nl = ft_strchr(data->full_buff, '\n');
-		if (post_nl)
-			break ;
-		data->read_value = read(fd, buffer, BUFFER_SIZE);
-		if (data->read_value >= 0)
-			buffer[data->read_value] = '\0';
-		if (data->read_value <= 0)
-			break ;
-		data->full_buff = ft_stradd(data->full_buff, buffer);
-		if (!data->full_buff)
-			break ;
+		free(buffer.data);
+		buffer.data = NULL;
+		buffer.length = 0;
+		buffer.capacity = 0;
+		if (bytes_read == -1 || line == NULL)
+		{
+			free(line);
+			line = NULL;
+			return (NULL);
+		}
 	}
-	if (data->read_value < 0)
-		return (ft_freestr(data->full_buff));
-	if (data->full_buff && data->read_value >= 0)
-		ft_extract_line(data);
-	else
-		ft_freestr(data->full_buff);
-	return (data);
-}
-
-void	get_next_line(t_buff *data)
-{
-	const int	fd = STDIN_FILENO;
-	static char	*residual;
-
-	if (fd < 0 || BUFFER_SIZE < 1)
-	{
-		residual = NULL;
-		data->valid_line = NULL;
-		return ;
-	}
-	ft_init_struct(data, residual);
-	ft_parse_line(fd, data);
-	residual = data->residual;
-	return ;
+	return (line);
 }

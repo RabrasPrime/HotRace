@@ -6,8 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/03/01 12:35:29 by tjooris          ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2026/03/01 12:35:29 by tjooris          ###   ########.fr       */ /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
@@ -38,40 +37,34 @@ void	switch_mode(unsigned char *mode)
 	}
 }
 
-void search_mode(t_buff *input, t_vector *map)
+void search_mode(char *input, t_vector *map)
 {
-    char *key = input->valid_line;
-    const char *value = search(map, key);
+    const char *value = search(map, input);
+	char *tmp;
+
+	tmp = input;
     if (!value)
     {
-        key[ft_strlen(key) - 1] = '\0';
-        write(STDERR_FILENO, key, ft_strlen(key));
-        write(STDERR_FILENO, ": Not found.\n", 13);
+        tmp[ft_strlen(tmp) - 1] = '\0';
+        write(STDOUT_FILENO, tmp, ft_strlen(tmp));
+        write(STDOUT_FILENO, ": Not found.\n", 13);
     }
     else
         write(STDOUT_FILENO, value, ft_strlen(value));
-    ft_freestr(input->valid_line);
-    input->valid_line = NULL;
 }
 
-void data_mode(t_buff *input, t_vector *map)
+void data_mode(char *input, t_vector *map)
 {
-    char *key = ft_strndup(input->valid_line, ft_strlen(input->valid_line));
-    ft_freestr(input->valid_line);
-    input->valid_line = NULL;
-    get_next_line(input);
-    char *value = ft_strndup(input->valid_line, ft_strlen(input->valid_line));
-    ft_freestr(input->valid_line);
-    input->valid_line = NULL;
+    char *key = input;
+    char * value = get_next_line();
     insert(map, key, value);
 }
 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(t_buff *, t_vector *);
-	t_buff			input;
+	void			(*f_modes[MODE_QTY])(char *, t_vector *);
+	char			*input;
 	t_vector		*map;
-	char			*line;
 	unsigned char	mode;
 
 	f_modes[DATA]= &data_mode;
@@ -80,23 +73,20 @@ int main(void)
 	if (!map)
 		return (1);
 	mode = DATA;
-	get_next_line(&input);
-	while (input.valid_line)
+	input = get_next_line();
+	while (input)
 	{
-        line = input.valid_line;
-        if (!ft_strcmp(line, "exit!\n"))
+        if (!ft_strcmp(input, "exit!\n"))
             break;
-        if (line[0] == '\n' && line[1] == '\0')
+        if (input[0] == '\n' && input[1] == '\0')
         {
-            ft_freestr(input.valid_line);
-            input.valid_line = NULL;
+            ft_freestr(&input);
             switch_mode(&mode);
         }
         else
-            f_modes[mode](&input, map);
-        get_next_line(&input);
+            f_modes[mode](input, map);
+        input = get_next_line();
 	}
-	ft_clear_struct(&input);
 	clear_vector(&map);
 	return (0);
 }

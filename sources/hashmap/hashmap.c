@@ -12,19 +12,19 @@
 
 #include "hotrace.h"
 
-int	rev_hash_function(const size_t capacity, char *key)
-{
-	int	bucket_index;
-	int	i;
-	int	key_length;
-	int	sum;
-	int	factor;
+#include <stdio.h>
 
-	i = 0;
+int	rev_hash_function(const size_t capacity, const char *key)
+{
+	int				bucket_index;
+	size_t			i;
+	int				sum;
+	int				factor;
+
+	printf("key:%s\n",key);
 	sum = 0;
-	key_length = strlen(key);
-	i = key_length;
-	while (i >= 0)
+	i = ft_strlen(key) - 1;
+	while (i > 0)
 	{
 		sum = ((sum % capacity) + key[i]) % capacity;
 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
@@ -34,17 +34,16 @@ int	rev_hash_function(const size_t capacity, char *key)
 	return (bucket_index);
 }
 
-int	hash_function(const size_t capacity, char *key)
+int	hash_function(const size_t capacity, const char *key)
 {
+	const size_t	key_length = ft_strlen(key);
 	int	bucket_index;
-	int	i;
-	int	key_length;
+	size_t	i;
 	int	sum;
 	int	factor;
 
 	i = 0;
 	sum = 0;
-	key_length = strlen(key);
 	while (i < key_length)
 	{
 		sum = ((sum % capacity) + key[i]) % capacity;
@@ -106,13 +105,11 @@ char    *search(t_vector *map, char *key)
 	const int	entry_index = hash_function(map->capacity, key);
 	const int	sub_index = rev_hash_function(map->capacity, key);
 	t_vector	*entry;
-	t_node		*n;
 	size_t		i;
 
 	i = 0;
 	entry = ((t_vector **)map->array)[entry_index];
 	if (!entry)
 		return (NULL);
-	n = (t_node *) entry->array;
-	return (n[sub_index].value);
+	return (((t_node *) entry->array)[sub_index].value);
 }

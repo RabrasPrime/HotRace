@@ -14,12 +14,6 @@
 
 #include <string.h>
 
-void	set_node(t_node *node, char *key, char *value)
-{
-	node->key = strdup(key);
-	node->value = strdup(value);
-}
-
 void clear_node(t_vector *vnodes)
 {
 	t_node	*nodes;

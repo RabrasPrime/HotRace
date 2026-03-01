@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/28 20:01:33 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 20:13:28 by abetemps         ###   ########.fr       */
+/*   Created: 2026/03/01 15:01:19 by abetemps          #+#    #+#             */
+/*   Updated: 2026/03/01 15:01:55 by abetemps         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hotrace.h"
+#include <unistd.h>
 
-char	*ft_strchr(const char *s, int c)
+void	*ft_memchr(const void *memoryBlock, int searchedChar, size_t size)
 {
-	int	len;
-	int	i;
-
-	len = ft_strlen(s);
-	if (!s || len == 0)
-		return (NULL);
-	i = 0;
-	while (i <= len)
+	while (size > 0)
 	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)s + i);
-		else
-			i++;
+		if (*(unsigned char *)memoryBlock == (unsigned char)searchedChar)
+			return ((void *)memoryBlock);
+		memoryBlock++;
+		size--;
 	}
-	return (NULL);
+	return (0);
 }
