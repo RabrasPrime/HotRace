@@ -12,44 +12,100 @@
 
 #include "hotrace.h"
 
-int	rev_hash_function(const size_t capacity, const char *key)
-{
-	int				bucket_index;
-	size_t			i;
-	int				sum;
-	int				factor;
-
-	sum = 0;
-	i = ft_strlen(key) - 1;
-	while (i > 0)
-	{
-		sum = ((sum % capacity) + key[i]) % capacity;
-		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
-		--i;
-	}
-	bucket_index = sum;
-	return (bucket_index);
-}
-
 int	hash_function(const size_t capacity, const char *key)
 {
-	const size_t	key_length = ft_strlen(key);
-	int	bucket_index;
-	size_t	i;
-	int	sum;
-	int	factor;
+	const unsigned char *s = (const unsigned char *)key;
+	unsigned int sum = 0;
+	size_t i = 0;
 
-	i = 0;
-	sum = 0;
-	while (i < key_length)
-	{
-		sum = ((sum % capacity) + key[i]) % capacity;
-		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
-		++i;
-	}
-	bucket_index = sum;
-	return (bucket_index);
+	__asm__ volatile (
+		"1:                             \n\t"
+		"movb    (%[str],%[i]), %%cl    \n\t"
+		"testb   %%cl, %%cl             \n\t"
+		"jz      2f                     \n\t"
+		"shll    $5, %[sum]             \n\t"
+		"shrl    $2, %%edx              \n\t"
+		"addl    %%ecx, %%edx           \n\t"
+		"xorl    %%edx, %[sum]          \n\t"
+		"incq    %[i]                   \n\t"
+		"jmp     1b                     \n\t"
+		"2:                             \n\t"
+		: [sum] "+r" (sum), [i] "+r" (i)
+		: [str] "r" (s)
+		: "cc", "memory", "ecx", "edx"
+	);
+
+	return (int)(sum & (capacity - 1));
 }
+
+int rev_hash_function(const size_t capacity, const char *key)
+{
+	const unsigned char *s = (const unsigned char *)key;
+	unsigned int sum = 0U;
+	size_t i = ft_strlen(key);
+
+	if (i == 0)
+		return (0);
+	i--;
+
+	__asm__ volatile (
+		"1:                             \n\t"
+		"movb    (%[str],%[i]), %%cl    \n\t"
+		"shll    $3, %[sum]             \n\t"
+		"shrl    $4, %%edx              \n\t"
+		"xorl    %%ecx, %%edx           \n\t"
+		"xorl    %%edx, %[sum]          \n\t"
+		"testq   %[i], %[i]             \n\t"
+		"je      2f                     \n\t"
+		"decq    %[i]                   \n\t"
+		"jmp     1b                     \n\t"
+		"2:                             \n\t"
+		: [sum] "+r" (sum), [i] "+r" (i)
+		: [str] "r" (s)
+		: "cc", "memory", "ecx", "edx"
+	);
+
+	return (int)(sum & (capacity - 1));
+}
+
+// int	rev_hash_function(const size_t capacity, const char *key)
+// {
+// 	int				bucket_index;
+// 	size_t			i;
+// 	int				sum;
+// 	int				factor;
+//
+// 	sum = 0;
+// 	i = ft_strlen(key) - 1;
+// 	while (i > 0)
+// 	{
+// 		sum = ((sum % capacity) + key[i]) % capacity;
+// 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
+// 		--i;
+// 	}
+// 	bucket_index = sum;
+// 	return (bucket_index);
+// }
+//
+// int	hash_function(const size_t capacity, const char *key)
+// {
+// 	const size_t	key_length = ft_strlen(key);
+// 	int	bucket_index;
+// 	size_t	i;
+// 	int	sum;
+// 	int	factor;
+//
+// 	i = 0;
+// 	sum = 0;
+// 	while (i < key_length)
+// 	{
+// 		sum = ((sum % capacity) + key[i]) % capacity;
+// 		factor = ((factor % __INT16_MAX__) * (31 % __INT16_MAX__)) % __INT16_MAX__;
+// 		++i;
+// 	}
+// 	bucket_index = sum;
+// 	return (bucket_index);
+// }
 
 int    insert(t_vector *vmap, char *key, char *value)
 {
