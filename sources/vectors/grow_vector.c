@@ -6,7 +6,7 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:19:45 by abetemps          #+#    #+#             */
-/*   Updated: 2025/07/16 18:51:03 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:05:09 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	grow_vector(t_vector *vec)
 			clear_vector(&vec);
 			return (false);
 		}
-		ft_memcpy(vec->array, old_array, vec->capacity);
+		ft_memcpy(vec->array, old_array, vec->nb_elements * vec->datatype_size);
 		free(old_array);
 	}
 	return (true);

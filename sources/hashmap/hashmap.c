@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:59:32 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 20:40:08 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:04:37 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int    insert(t_vector *vmap, char *key, char *value)
 	nodemap = (t_node *) map[bucket_index]->array;
 	node_index = rev_hash_function(map[bucket_index]->capacity, key);
 
+	free(nodemap[node_index].key);
+	free(nodemap[node_index].value);
 	nodemap[node_index].key = key;
 	nodemap[node_index].value = value;
 

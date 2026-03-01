@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:04:06 by tjooris           #+#    #+#             */
-/*   Updated: 2026/02/28 19:09:13 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:05:55 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void clear_node(t_vector *vnodes)
 	i = 0;
 	while (i < vnodes->capacity)
 	{
-		free(nodes[i].key);
-		free(nodes[i].value);
+		if (nodes[i].key)
+			free(nodes[i].key);
+		if (nodes[i].value)
+			free(nodes[i].value);
 		++i;
 	}
 

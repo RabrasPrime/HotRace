@@ -6,7 +6,8 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/03/01 12:35:29 by tjooris          ###   ########.fr       */ /*                                                                            */
+/*   Updated: 2026/03/01 18:00:23 by tjooris          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
@@ -40,32 +41,29 @@ static inline void	switch_mode(unsigned char *mode)
 static inline void search_mode(char *input, t_vector *map)
 {
 	const char 		*key = input;
-    const char		*value = search(map, input);
+	const char		*value = search(map, input);
 	const size_t	klen = ft_strlen(key);
 
-    if (!value)
-    {
-        write(STDOUT_FILENO, key, klen - 2);
-        write(STDOUT_FILENO, ": Not found.\n", 13);
-    }
-    else
-        write(STDOUT_FILENO, value, ft_strlen(value));
+	if (!value)
+	{
+		write(STDOUT_FILENO, key, klen - 2);
+		write(STDOUT_FILENO, ": Not found.\n", 13);
+	}
+	else
+		write(STDOUT_FILENO, value, ft_strlen(value));
 }
 
 static inline void data_mode(char *input, t_vector *map)
 {
-    insert(map, input, get_next_line());
+	insert(map, input, get_next_line());
 }
 
 int main(void)
 {
-	void			(*f_modes[MODE_QTY])(char *, t_vector *);
 	char			*input;
 	t_vector		*map;
 	unsigned char	mode;
 
-	f_modes[DATA] = &data_mode;
-	f_modes[SEARCH] = &search_mode;
 	map = create_vector(DEFAULT_VEC_CAP, sizeof(t_vector *), &clear_bucket);
 	if (!map)
 		return (1);
@@ -73,14 +71,19 @@ int main(void)
 	input = get_next_line();
 	while (input)
 	{
-        if (input[0] == '\n' && input[1] == '\0')
-        {
-            ft_freestr(&input);
-            switch_mode(&mode);
-        }
-        else
-            f_modes[mode](input, map);
-        input = get_next_line();
+		if (input[0] == '\n' && input[1] == '\0')
+		{
+			ft_freestr(&input);
+			switch_mode(&mode);
+		}
+		else if (mode == DATA)
+			data_mode(input, map);
+		else
+		{
+			search_mode(input, map);
+			ft_freestr(&input);
+		}
+		input = get_next_line();
 	}
 	clear_vector(&map);
 	return (0);
