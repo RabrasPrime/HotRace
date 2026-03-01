@@ -6,7 +6,7 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:20:18 by abetemps          #+#    #+#             */
-/*   Updated: 2026/02/28 20:30:27 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 12:38:31 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	*ft_extract_line(t_buff *data)
 			return (ft_clear_struct(data));
 	}
 	ft_freestr(data->full_buff);
+	data->full_buff = NULL;
 	return (data);
 }
 
