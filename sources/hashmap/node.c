@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:04:06 by tjooris           #+#    #+#             */
-/*   Updated: 2026/03/01 18:05:55 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/03/01 19:10:03 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <string.h>
 
-void clear_node(t_vector *vnodes)
+void	clear_node(t_vector *vnodes)
 {
 	t_node	*nodes;
 	size_t	i;
@@ -29,17 +29,16 @@ void clear_node(t_vector *vnodes)
 			free(nodes[i].value);
 		++i;
 	}
-
 }
 
-void clear_bucket(t_vector *vmap)
+void	clear_bucket(t_vector *vmap)
 {
 	size_t		i;
 	t_vector	**bucket;
 
 	i = 0;
 	bucket = (t_vector **) vmap->array;
-	while(i < vmap->capacity)
+	while (i < vmap->capacity)
 	{
 		if (bucket[i])
 			clear_vector(&bucket[i]);
