@@ -67,12 +67,31 @@ int	hash2(const size_t capacity, const char *key, int hash1)
 	return ((int)(sum & (capacity - 1)));
 }
 
+void	insert_bucket(t_vector **map, char *key, char *value, int bucket_index)
+{
+	t_node		*nodemap;
+	int			node_index;
+
+	nodemap = (t_node *)map[bucket_index]->array;
+	node_index = hash2(map[bucket_index]->capacity, key, bucket_index);
+	if (nodemap[node_index].key)
+	{
+		free(nodemap[node_index].key);
+		free(nodemap[node_index].value);
+	}
+	else
+	{
+		map[bucket_index]->occupied_bytes += map[bucket_index]->datatype_size;
+		++map[bucket_index]->nb_elements;
+	}
+	nodemap[node_index].key = key;
+	nodemap[node_index].value = value;
+}
+
 int	insert(t_vector *vmap, char *key, char *value)
 {
 	t_vector	**map;
-	t_node		*nodemap;
 	int			bucket_index;
-	int			node_index;
 
 	map = (t_vector **)vmap->array;
 	bucket_index = hash1(vmap->capacity, key);
@@ -88,20 +107,7 @@ int	insert(t_vector *vmap, char *key, char *value)
 		vmap->occupied_bytes += vmap->datatype_size;
 		++vmap->nb_elements;
 	}
-	nodemap = (t_node *)map[bucket_index]->array;
-	node_index = hash2(map[bucket_index]->capacity, key, bucket_index);
-	if (nodemap[node_index].key)
-	{
-		free(nodemap[node_index].key);
-		free(nodemap[node_index].value);
-	}
-	else
-	{
-		map[bucket_index]->occupied_bytes += map[bucket_index]->datatype_size;
-		++map[bucket_index]->nb_elements;
-	}
-	nodemap[node_index].key = key;
-	nodemap[node_index].value = value;
+	insert_bucket(map, key, value, bucket_index);
 	return (0);
 }
 

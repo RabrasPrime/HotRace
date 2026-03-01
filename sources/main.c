@@ -47,9 +47,37 @@ static inline void	search_mode(char *input, t_vector *map)
 		write(STDOUT_FILENO, value, ft_strlen(value));
 }
 
-static inline void	data_mode(char *input, t_vector *map)
+static inline int	data_mode(char *input, t_vector *map)
 {
-	insert(map, input, get_next_line());
+	return (insert(map, input, get_next_line()));
+}
+
+static inline int	main_loop(char *input, t_vector *map, unsigned char mode)
+{
+	while (input)
+	{
+		if (input[0] == '\n' && input[1] == '\0')
+		{
+			ft_freestr(&input);
+			switch_mode(&mode);
+		}
+		else if (mode == DATA)
+		{
+			if (data_mode(input, map) == -1)
+			{
+				clear_vector(&map);
+				return (1);
+			}
+		}
+		else
+		{
+			search_mode(input, map);
+			ft_freestr(&input);
+		}
+		input = get_next_line();
+	}
+	clear_vector(&map);
+	return (0);
 }
 
 int	main(void)
@@ -63,22 +91,5 @@ int	main(void)
 		return (1);
 	mode = DATA;
 	input = get_next_line();
-	while (input)
-	{
-		if (input[0] == '\n' && input[1] == '\0')
-		{
-			ft_freestr(&input);
-			switch_mode(&mode);
-		}
-		else if (mode == DATA)
-			data_mode(input, map);
-		else
-		{
-			search_mode(input, map);
-			ft_freestr(&input);
-		}
-		input = get_next_line();
-	}
-	clear_vector(&map);
-	return (0);
+	return (main_loop(input, map, mode));
 }
