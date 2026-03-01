@@ -6,13 +6,13 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:02:41 by abetemps          #+#    #+#             */
-/*   Updated: 2026/03/01 15:04:17 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:58:10 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-void		ft_freestr(char **s)
+void	ft_freestr(char **s)
 {
 	if (*s)
 	{

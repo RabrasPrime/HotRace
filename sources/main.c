@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 10:54:44 by tjooris           #+#    #+#             */
-/*   Updated: 2026/03/01 18:00:23 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/03/01 19:03:22 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,14 @@
 static inline void	switch_mode(unsigned char *mode)
 {
 	if (*mode & SEARCH)
-	{
-		// printf("====DATA MODE====\n");
 		*mode = DATA;
-	}
 	else
-	{
-		// printf("====SEARCH MODE====\n");
 		*mode = SEARCH;
-	}
 }
 
-static inline void search_mode(char *input, t_vector *map)
+static inline void	search_mode(char *input, t_vector *map)
 {
-	const char 		*key = input;
+	const char		*key = input;
 	const char		*value = search(map, input);
 	const size_t	klen = ft_strlen(key);
 
@@ -53,12 +47,12 @@ static inline void search_mode(char *input, t_vector *map)
 		write(STDOUT_FILENO, value, ft_strlen(value));
 }
 
-static inline void data_mode(char *input, t_vector *map)
+static inline void	data_mode(char *input, t_vector *map)
 {
 	insert(map, input, get_next_line());
 }
 
-int main(void)
+int	main(void)
 {
 	char			*input;
 	t_vector		*map;

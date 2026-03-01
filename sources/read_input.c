@@ -6,7 +6,7 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 12:20:18 by abetemps          #+#    #+#             */
-/*   Updated: 2026/03/01 12:38:31 by tjooris          ###   ########.fr       */
+/*   Updated: 2026/03/01 19:03:48 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,5 @@ char	*get_next_line(void)
 			return (NULL);
 		}
 	}
-	// line[ft_strlen(line) - 1] = '\0';
 	return (line);
 }
