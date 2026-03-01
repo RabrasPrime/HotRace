@@ -12,8 +12,6 @@
 
 #include "hotrace.h"
 
-#include <stdio.h>
-
 int	rev_hash_function(const size_t capacity, const char *key)
 {
 	int				bucket_index;
@@ -21,7 +19,6 @@ int	rev_hash_function(const size_t capacity, const char *key)
 	int				sum;
 	int				factor;
 
-	printf("key:%s\n",key);
 	sum = 0;
 	i = ft_strlen(key) - 1;
 	while (i > 0)
