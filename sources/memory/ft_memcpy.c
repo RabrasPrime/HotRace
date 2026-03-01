@@ -23,8 +23,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	while (i < n)
 	{
 		ptr[i] = (*(uint8_t *) src);
-		i += 1;
-		src += 1;
+		++i;
+		++src;
 	}
 	return (dest);
 }

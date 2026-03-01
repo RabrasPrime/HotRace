@@ -14,23 +14,34 @@
 
 void *ft_memmove(void *dest, const void *src, size_t n)
 {
-	if (n == 0 || dest == src)
-		return dest;
+    const uint8_t	*s = (const uint8_t *)src;
+    uint8_t			*d;
 
-	__asm__ volatile (
-		"xorq    %%rax, %%rax           \n\t"
-		"1:                             \n\t"
-		"cmpq    %%rax, %[n]            \n\t"
-		"je      2f                     \n\t"
-		"movb    (%[src],%%rax), %%cl   \n\t"
-		"movb    %%cl, (%[dest],%%rax)  \n\t"
-		"incq    %%rax                  \n\t"
-		"jmp     1b                     \n\t"
-		"2:                             \n\t"
-		:
-		: [dest] "r" (dest), [src] "r" (src), [n] "r" (n)
-		: "cc", "memory", "rax", "cl"
-	);
+	d = (uint8_t *)dest;
+    if (n == 0 || dest == src)
+        return (dest);
 
-	return dest;
+    if (n < 8)
+	{
+        if (s >= (uint8_t*)dest)
+		{
+            size_t i = 0;
+            while (i < n)
+			{
+                d[i] = s[i];
+                i++;
+            }
+        }
+		else 
+            while (n--)
+                d[n] = s[n];
+        return (dest);
+    }
+    __asm__ volatile (
+        "rep movsb"
+        : "+D" (d), "+S" (s), "+c" (n)
+        :
+        : "memory"
+    );
+    return (dest);
 }

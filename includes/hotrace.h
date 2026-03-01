@@ -20,11 +20,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define BUFFER_SIZE		4096
-#define DEFAULT_VEC_CAP	1024
+#include <stdio.h>
 
-#define LOMAGIC 0x0101010101010101ULL 
-#define HIMAGIC 0x8080808080808080ULL 
+#define BUFFER_SIZE		4096
+#define DEFAULT_VEC_CAP	16384
 
 #define TRUE	1
 #define FALSE	0

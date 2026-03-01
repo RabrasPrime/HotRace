@@ -98,7 +98,7 @@ INCLUDES    =   $(INC_DIR) \
 
 CC          =   cc
 
-FLAGS       +=  -Wall -Wextra -Werror -g3
+FLAGS       +=  -Wall -Wextra -Werror
 PPFLAGS     +=  $(addprefix -I, $(INCLUDES)) -MMD -MP
 
 LDFLAGS     +=  $(addprefix -L, $(dir $(LIB_PATH)))

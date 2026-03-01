@@ -18,8 +18,8 @@ void	*ft_memchr(const void *memoryBlock, int searchedChar, size_t size)
 	{
 		if (*(unsigned char *)memoryBlock == (unsigned char)searchedChar)
 			return ((void *)memoryBlock);
-		memoryBlock++;
-		size--;
+		++memoryBlock;
+		--size;
 	}
 	return (0);
 }

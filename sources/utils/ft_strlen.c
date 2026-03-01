@@ -12,44 +12,23 @@
 
 #include "hotrace.h"
 
-static uint64_t	result(const char *start, const uint64_t *word_pointer)
+size_t ft_strlen(const char *s)
 {
-	const char	*byte = (char *)(word_pointer - 1);
-	int8_t		i;
+    if (!s)
+        return 0;
 
-	i = -1;
-	while (++i < 8)
-	{
-		if (byte[i] ^ '\0')
-			;
-		else
-			return (byte + i - start);
-	}
-	return (0);
-}
+    size_t len;
+    const char *start = s;
 
-uint64_t	ft_strlen(const char *s)
-{
-	const char		*start = s;
-	const char		*p = s;
-	uint64_t		*word_pointer;
-	uint64_t		word;
+    __asm__ volatile (
+        "cld                   \n\t"
+        "repne scasb           \n\t"
+        "not %%rcx             \n\t"
+        "dec %%rcx             \n\t"
+        : "=c" (len), "+D" (s)
+        : "a" (0), "c" (-1)
+        : "cc", "memory"
+    );
 
-	if (!s)
-		return (0);
-	while ((uintptr_t)p & 0b00000111)
-	{
-		if (*p ^ '\0')
-			;
-		else
-			return (p - start);
-		++p;
-	}
-	word_pointer = (uint64_t *)p;
-	while (true)
-	{
-		word = *(word_pointer++);
-		if ((word - LOMAGIC) & HIMAGIC)
-			return (result(start, word_pointer));
-	}
+    return (size_t)(s - start);
 }

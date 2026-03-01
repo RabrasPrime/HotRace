@@ -100,5 +100,6 @@ char	*get_next_line(void)
 			return (NULL);
 		}
 	}
+	// line[ft_strlen(line) - 1] = '\0';
 	return (line);
 }

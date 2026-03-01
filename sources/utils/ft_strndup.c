@@ -21,7 +21,7 @@ char	*ft_strndup(char *s, size_t n)
 	ns = malloc(sizeof(char) * n + 1);
 	if (!ns)
 		return (NULL);
-	while (s[i] && i < n)
+	while (i < n && s[i])
 	{
 		ns[i] = s[i];
 		i++;

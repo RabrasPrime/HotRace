@@ -23,41 +23,38 @@
 
 #include <stdio.h>
 
-void	switch_mode(unsigned char *mode)
+static inline void	switch_mode(unsigned char *mode)
 {
 	if (*mode & SEARCH)
 	{
-		printf("====DATA MODE====\n");
+		// printf("====DATA MODE====\n");
 		*mode = DATA;
 	}
 	else
 	{
-		printf("====SEARCH MODE====\n");
+		// printf("====SEARCH MODE====\n");
 		*mode = SEARCH;
 	}
 }
 
-void search_mode(char *input, t_vector *map)
+static inline void search_mode(char *input, t_vector *map)
 {
-    const char *value = search(map, input);
-	char *tmp;
+	const char 		*key = input;
+    const char		*value = search(map, input);
+	const size_t	klen = ft_strlen(key);
 
-	tmp = input;
     if (!value)
     {
-        tmp[ft_strlen(tmp) - 1] = '\0';
-        write(STDOUT_FILENO, tmp, ft_strlen(tmp));
+        write(STDOUT_FILENO, key, klen - 2);
         write(STDOUT_FILENO, ": Not found.\n", 13);
     }
     else
         write(STDOUT_FILENO, value, ft_strlen(value));
 }
 
-void data_mode(char *input, t_vector *map)
+static inline void data_mode(char *input, t_vector *map)
 {
-    char *key = input;
-    char * value = get_next_line();
-    insert(map, key, value);
+    insert(map, input, get_next_line());
 }
 
 int main(void)
@@ -67,8 +64,8 @@ int main(void)
 	t_vector		*map;
 	unsigned char	mode;
 
-	f_modes[DATA]= &data_mode;
-	f_modes[SEARCH]= &search_mode;
+	f_modes[DATA] = &data_mode;
+	f_modes[SEARCH] = &search_mode;
 	map = create_vector(DEFAULT_VEC_CAP, sizeof(t_vector *), &clear_bucket);
 	if (!map)
 		return (1);
@@ -76,8 +73,6 @@ int main(void)
 	input = get_next_line();
 	while (input)
 	{
-        if (!ft_strcmp(input, "exit!\n"))
-            break;
         if (input[0] == '\n' && input[1] == '\0')
         {
             ft_freestr(&input);
