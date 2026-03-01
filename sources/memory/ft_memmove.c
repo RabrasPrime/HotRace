@@ -6,42 +6,41 @@
 /*   By: abetemps <abetemps@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:00:23 by abetemps          #+#    #+#             */
-/*   Updated: 2026/03/01 15:00:37 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:46:01 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hotrace.h"
 
-void *ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-    const uint8_t	*s = (const uint8_t *)src;
-    uint8_t			*d;
+	const uint8_t	*s = (const uint8_t *)src;
+	uint8_t			*d;
 
 	d = (uint8_t *)dest;
-    if (n == 0 || dest == src)
-        return (dest);
-
-    if (n < 8)
+	if (n == 0 || dest == src)
+		return (dest);
+	if (n < 8)
 	{
-        if (s >= (uint8_t*)dest)
+		if (s >= (uint8_t*)dest)
 		{
-            size_t i = 0;
-            while (i < n)
+			size_t i = 0;
+			while (i < n)
 			{
-                d[i] = s[i];
-                i++;
-            }
-        }
+				d[i] = s[i];
+				i++;
+			}
+		}
 		else 
-            while (n--)
-                d[n] = s[n];
-        return (dest);
-    }
-    __asm__ volatile (
-        "rep movsb"
-        : "+D" (d), "+S" (s), "+c" (n)
-        :
-        : "memory"
-    );
+			while (n--)
+				d[n] = s[n];
+		return (dest);
+	}
+	__asm__ volatile (
+		"rep movsb"
+		: "+D" (d), "+S" (s), "+c" (n)
+		:
+		: "memory"
+	);
     return (dest);
 }

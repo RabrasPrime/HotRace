@@ -6,27 +6,27 @@
 /*   By: tjooris <tjooris@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 11:00:21 by tjooris           #+#    #+#             */
-/*   Updated: 2026/03/01 15:03:18 by abetemps         ###   ########.fr       */
+/*   Updated: 2026/03/01 18:42:37 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HOTRACE_H
-#define HOTRACE_H
+# define HOTRACE_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <stdbool.h>
+# include <stdlib.h>
+# include <string.h>
+# include <limits.h>
+# include <unistd.h>
+# include <stdint.h>
+# include <stdbool.h>
 
-#include <stdio.h>
+# include <stdio.h>
 
-#define BUFFER_SIZE		4096
-#define DEFAULT_VEC_CAP	16384
+# define BUFFER_SIZE		4096
+# define DEFAULT_VEC_CAP	16384
 
-#define TRUE	1
-#define FALSE	0
+# define TRUE	1
+# define FALSE	0
 
 enum	e_modes
 {
@@ -35,9 +35,9 @@ enum	e_modes
 	MODE_QTY
 };
 
-typedef struct s_vector t_vector;
-typedef struct s_node t_node;
-typedef struct s_buff t_buff;
+typedef struct s_vector	t_vector;
+typedef struct s_node	t_node;
+typedef struct s_buff	t_buff;
 
 struct s_buff
 {
@@ -63,7 +63,7 @@ struct s_node
 };
 
 void		set_node(t_node *node, char *key, char *value);
-void 		clear_node(t_vector *vnodes);
+void		clear_node(t_vector *vnodes);
 void		clear_bucket(t_vector *map);
 int			init_vector(t_vector *hashmap);
 
@@ -78,11 +78,11 @@ char		*ft_strndup(char *s, size_t n);
 uint64_t	ft_strlen(const char *s);
 void		ft_freestr(char **s);
 
-char 		*search(t_vector *map, char *key);
-int   		insert(t_vector *map, char *key, char *value);
+char		*search(t_vector *map, char *key);
+int			insert(t_vector *map, char *key, char *value);
 
 t_vector	*create_vector(size_t capacity, size_t datatype_size,
-							void (*clear_array)(t_vector *));
+				void (*clear_array)(t_vector *));
 bool		grow_vector(t_vector *vec);
 bool		add_element(t_vector *vec, void *element);
 void		clear_vector(t_vector **vec);
