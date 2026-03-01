@@ -86,17 +86,11 @@ int rev_hash_function(const size_t capacity, const char *key)
 
 int    insert(t_vector *vmap, char *key, char *value)
 {
+	t_vector	**map;
+	t_node		*nodemap;
 	int			bucket_index;
 	int			node_index;
-	t_node		*nodemap;
-	t_vector	**map;
 
-	// if (!grow_vector(vmap))
-	// {
-	// 	write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
-	// 	return (-1);
-	// }
-	//
 	map = (t_vector **) vmap->array;
 	bucket_index = hash_function(vmap->capacity, key);
 
@@ -111,24 +105,20 @@ int    insert(t_vector *vmap, char *key, char *value)
 		vmap->occupied_bytes += vmap->datatype_size;
 		++vmap->nb_elements;
 	}
-
-	// if (!grow_vector(map[bucket_index]))
-	// {
-	// 	write(STDERR_FILENO, "Error: Memory allocation failed.\n", 32);
-	// 	return (-1);
-	// }
-
 	nodemap = (t_node *) map[bucket_index]->array;
 	node_index = rev_hash_function(map[bucket_index]->capacity, key);
-
-	free(nodemap[node_index].key);
-	free(nodemap[node_index].value);
+	if (nodemap[node_index].key)
+	{
+		free(nodemap[node_index].key);
+		free(nodemap[node_index].value);
+	}
+	else
+	{
+		map[bucket_index]->occupied_bytes += map[bucket_index]->datatype_size;
+		++map[bucket_index]->nb_elements;
+	}
 	nodemap[node_index].key = key;
 	nodemap[node_index].value = value;
-
-	map[bucket_index]->occupied_bytes += map[bucket_index]->datatype_size;
-	++map[bucket_index]->nb_elements;
-	
 	return (0);
 }
 
