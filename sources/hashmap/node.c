@@ -12,8 +12,6 @@
 
 #include "hotrace.h"
 
-#include <string.h>
-
 void	clear_node(t_vector *vnodes)
 {
 	t_node	*nodes;
